@@ -133,3 +133,63 @@ exports.followAndUnfollowUser = async (req, res) => {
     });
   }
 };
+
+exports.updatePassword = async (req,res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const {oldPassword, newPassword} = req.body;
+    if(!oldPassword || !newPassword){
+      return res.status(400).json({
+        success: false,
+        message: "Please provide old and new password",
+      });
+    }
+    const isMatch = await user.matchPassword(oldPassword);
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Incorrect Old Password",
+      });
+    }
+
+    user.password = newPassword;
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: "Password Updated",
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+  
+}
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const {name, email} = req.body;
+    if(name){
+      user.name = name;
+
+    }
+    if(email){
+      user.email = email;
+
+    }
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: "Profile Updated",
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
