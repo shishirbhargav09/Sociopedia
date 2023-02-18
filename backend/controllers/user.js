@@ -1,5 +1,5 @@
 const User = require("../models/User");
-
+const Post = require("../models/Post");
 exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -186,6 +186,73 @@ exports.updateProfile = async (req, res) => {
       message: "Profile Updated",
     });
 
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+exports.deleteMyProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id)
+    const posts = user.posts;
+    const followers = user.followers;
+    const following = user.following;
+    const userId = user._id;
+    await user.remove();
+
+    res
+    .cookie("token", null, {
+      expires: new Date(Date.now() ),
+      httpOnly: true,
+    })
+    //removing user's all posts
+
+    for (let i = 0; i < posts.length; i++) {
+      const post = await Post.findById(posts[i]);
+      await post.remove(); 
+      
+    }
+    //removing user from followers following
+    for (let i = 0; i < followers.length; i++) {
+      const follower = await User.findById(followers[i]);
+      const index = follower.following.indexOf(userId)
+      follower.following.splice(index,1);
+      await follower.save();
+      
+    }
+    //removing user from following's followers
+    for (let i = 0; i < following.length; i++) {
+      const follows = await User.findById(following[i]);
+      const index = follows.following.indexOf(userId)
+      follows.following.splice(index,1);
+      await follows.save();
+      
+    }
+    
+    res.status(200).json({
+      success: true,
+      message: "Profile Deleted",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+  
+}
+
+exports.myProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id)
+    res.status(200).json({
+      success: true,
+      user,
+    });
+    
   } catch (error) {
     res.status(500).json({
       success: false,
