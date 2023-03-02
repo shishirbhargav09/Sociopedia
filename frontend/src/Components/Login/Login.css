@@ -34,7 +34,7 @@
   .loginForm > a {
     align-self: flex-end;
     text-decoration: none;
-    color: rgba(0, 0, 0, 0.342);
+    color: rgba(0, 0, 0, 0.342); 
     margin: 2vmax;
   }
   
