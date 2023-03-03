@@ -21,7 +21,7 @@ function Login() {
         <input
           type="email"
           autoComplete="username"
-          placeholder="email"
+          placeholder="Email"
           required
           value={email}
           onChange={(e) => {
@@ -30,7 +30,7 @@ function Login() {
         />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           autoComplete="current-password"
           required
           value={password}

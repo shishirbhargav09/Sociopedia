@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
+const initialState = {
+  isAuthenticated : false,
+};
 
 export const userSlice = createSlice({
   name: "user",
@@ -67,7 +69,6 @@ export const userSlice = createSlice({
     },
   },
 });
-
 export const { LoginRequest, LoginSuccess, LoginFailure, RegisterRequest, RegisterSuccess, RegisterFailure, LoadUserRequest, LoadUserSuccess, LoadUserFailure, LogoutUserRequest, LogoutUserSuccess, LogoutUserFailure, clearErrors } =
 userSlice.actions;
 
