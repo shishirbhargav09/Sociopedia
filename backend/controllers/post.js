@@ -29,10 +29,10 @@ exports.createPost = async (req, res) => {
   }
 };
 
+
 exports.likeAndUnlikePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    console.log(req.params.id);
 
     if (!post) {
       return res.status(404).json({
@@ -40,12 +40,17 @@ exports.likeAndUnlikePost = async (req, res) => {
         message: "Post not found",
       });
     }
-    console.log(req.user._id);
-    console.log(post.likes.includes(req.user._id));
-    if (post.likes.includes(req.user._id)) {
-      const index = post.likes.indexOf(req.user._id);
+    let likeExists = false;
+    let likeIndex = 0;
+    post.likes.forEach((item, index) => {
+      if (item._id.toString() === req.user._id.toString())
+      likeExists = true;
+      likeIndex = index;
+    });
 
-      post.likes.splice(index, 1);
+    if (likeExists) {
+
+      post.likes.splice(likeIndex, 1);
 
       await post.save();
 
@@ -110,10 +115,10 @@ exports.getPostOfFollowing = async (req, res) => {
       owner: {
         $in: user.following,
       },
-    });
+    }).populate("owner likes comments.user");
     res.status(200).json({
       success: true,
-      message: posts,
+      posts: posts.reverse(),
     });
   } catch (error) {
     res.status(500).json({

@@ -5,12 +5,14 @@ import { LoadUser } from "./Actions/User";
 import Header from "./Components/Header/Header";
 import Home from "./Components/Home/Home";
 import Login from "./Components/Login/Login";
+import { Toaster } from "react-hot-toast";
 function App() {
   const {isAuthenticated} = useSelector((state)=>state.user)
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(LoadUser());
-  }, [])
+    
+  }, [dispatch])
   
   return (
     <BrowserRouter>
@@ -18,6 +20,7 @@ function App() {
       <Routes>
         <Route path='/' element={isAuthenticated? <Home/>:<Login/>}/>
       </Routes>
+      <Toaster/>
     </BrowserRouter>
   );
 }
