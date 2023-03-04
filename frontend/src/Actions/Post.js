@@ -10,6 +10,8 @@ export const likePost = (id) => async (dispatch) => {
       dispatch(likeSuccess(data.message))
       toast.success(data.message)
        } catch (error) {
-      dispatch(likeFailure(error.response.data.message))
+      dispatch(likeFailure(error.message)) 
+      toast.error(error.message)
+
     }
   };

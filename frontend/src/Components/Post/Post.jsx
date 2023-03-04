@@ -1,5 +1,5 @@
 import { Avatar, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Post.css";
 import {
@@ -9,7 +9,7 @@ import {
     ChatBubbleOutline,
     DeleteOutline,
   } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { likePost } from "../../Actions/Post";
 function Post({
   postId,
@@ -23,6 +23,7 @@ function Post({
   isDelete = false,
   isAccount = false,
 }) {
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
     const [liked, setLiked] = useState(false);
 
@@ -30,6 +31,15 @@ function Post({
         setLiked(!liked);
         dispatch(likePost(postId));
     }
+
+    useEffect(() => {
+      likes.forEach((item) => {
+        if (item._id === user._id) {
+          setLiked(true);
+        }
+      });
+    }, [likes, user._id]);
+  
   return (
     <div className="post">
       <div className="postHeader">
