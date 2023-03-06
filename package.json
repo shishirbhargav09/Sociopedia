@@ -2,14 +2,14 @@
   "name": "y",
   "version": "1.0.0",
   "description": "",
-  "main": "backend/server.js",
+  "main": "index.js",
   "engines": {
     "node": "16.18.1"
   },
   "scripts": {
-    "start": "nodemon backend/server.js"
+    "start": "nodemon index.js"
   }, 
-  "author": "",
+  "author": "Shishir Bhargav",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
