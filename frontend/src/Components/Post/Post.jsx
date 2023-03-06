@@ -1,4 +1,4 @@
-import { Avatar, Button, Typography } from "@mui/material";
+import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Post.css";
@@ -11,6 +11,9 @@ import {
   } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { likePost } from "../../Actions/Post";
+import { getFollowingPosts } from "../../Actions/User";
+import User from "../User/User";
+
 function Post({
   postId,
   caption,
@@ -23,13 +26,15 @@ function Post({
   isDelete = false,
   isAccount = false,
 }) {
+  const [likesUser, setLikesUser] = useState(false);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
     const [liked, setLiked] = useState(false);
 
-    const handlelike = () => {
+    const handlelike = async() => {
         setLiked(!liked);
-        dispatch(likePost(postId));
+       await dispatch(likePost(postId));
+       await dispatch(getFollowingPosts());
     }
 
     useEffect(() => {
@@ -77,7 +82,11 @@ function Post({
         backgroundColor:"white",
         cursor:"pointer",
         margin:"1vmax 2vmax"
-      }}><Typography>5 Likes</Typography></button>
+      }} onClick={() => {
+        setLikesUser(!likesUser)
+      }}
+      disabled={likes.length===0?true:false}
+      ><Typography>{likes.length} Likes</Typography></button>
       <div className="postFooter">
         <Button onClick={handlelike}>
            {
@@ -93,6 +102,20 @@ function Post({
     </Button>:null
        }
       </div>
+      <Dialog open={likesUser} onClose={() => setLikesUser(!likesUser)}>
+        <div className="DialogBox">
+          <Typography variant="h4">Liked By</Typography>
+
+          {likes.map((like) => (
+            <User
+              key={like._id}
+              userId={like._id}
+              name={like.name}
+              // avatar={like.avatar.url}
+            />
+          ))}
+        </div>
+      </Dialog>
     </div>
   );
 }
