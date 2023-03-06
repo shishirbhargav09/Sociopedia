@@ -9,6 +9,7 @@ import {
   postOfFollowingRequest,
   postOfFollowingSuccess,
 } from "../Reducers/PostofFollowingSlice";
+import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../Reducers/postSlice";
 import {
   LoadUserFailure,
   LoadUserRequest,
@@ -57,5 +58,15 @@ export const allUsers = () => async (dispatch) => {
     dispatch(allUsersSuccess(data.users));
   } catch (error) {
     dispatch(allUsersFailure(error.message));
+  }
+};
+
+export const getmygPosts = () => async (dispatch) => {
+  dispatch(myPostsRequest());
+  try {
+    const { data } = await axios.get("/api/v1/my/posts");
+    dispatch(myPostsSuccess(data.posts));
+  } catch (error) {
+    dispatch(myPostsFailure(error.message));
   }
 };

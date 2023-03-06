@@ -6,6 +6,7 @@ import Header from "./Components/Header/Header";
 import Home from "./Components/Home/Home";
 import Login from "./Components/Login/Login";
 import { Toaster } from "react-hot-toast";
+import Account from "./Components/Account/Account";
 function App() {
   const {isAuthenticated} = useSelector((state)=>state.user)
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function App() {
      {isAuthenticated &&  <Header />}
       <Routes>
         <Route path='/' element={isAuthenticated? <Home/>:<Login/>}/>
+        <Route path='/account' element={isAuthenticated? <Account/>:<Login/>}/>
       </Routes>
       <Toaster/>
     </BrowserRouter>
