@@ -3,16 +3,17 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Post.css";
 import {
-    MoreVert,
-    Favorite,
-    FavoriteBorder,
-    ChatBubbleOutline,
-    DeleteOutline,
-  } from "@mui/icons-material";
+  MoreVert,
+  Favorite,
+  FavoriteBorder,
+  ChatBubbleOutline,
+  DeleteOutline,
+} from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { likePost } from "../../Actions/Post";
+import { addCommentOnPost, likePost } from "../../Actions/Post";
 import { getFollowingPosts } from "../../Actions/User";
 import User from "../User/User";
+import CommentCard from "../CommentCard.jsx/CommentCard";
 
 function Post({
   postId,
@@ -27,39 +28,48 @@ function Post({
   isAccount = false,
 }) {
   const [likesUser, setLikesUser] = useState(false);
-  const [commentValue, setCommentValue] = useState("")
-  const [commentToggle, setCommentToggle] = useState(false)
+  const [commentValue, setCommentValue] = useState("");
+  const [commentToggle, setCommentToggle] = useState(false);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-    const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(false);
 
-    const handlelike = async() => {
-        setLiked(!liked);
-       await dispatch(likePost(postId));
-       await dispatch(getFollowingPosts());
+  const handlelike = async () => {
+    setLiked(!liked);
+    await dispatch(likePost(postId));
+    if (isAccount) {
+      console.log("Bring my posts");
+    } else {
+      dispatch(getFollowingPosts());
     }
+  };
 
-    useEffect(() => {
-      likes.forEach((item) => {
-        if (item._id === user._id) {
-          setLiked(true);
-        }
-      });
-    }, [likes, user._id]);
-    
-    const addCommentHandler = (e) => {
-      e.preventDefault()
-     
+  useEffect(() => {
+    likes.forEach((item) => {
+      if (item._id === user._id) {
+        setLiked(true);
+      }
+    });
+  }, [likes, user._id]);
+
+  const addCommentHandler = async (e) => {
+    e.preventDefault();
+    await dispatch(addCommentOnPost(postId, commentValue));
+    if (isAccount) {
+      console.log("Bring my posts");
+    } else {
+      dispatch(getFollowingPosts());
     }
-  
+  };
+
   return (
     <div className="post">
       <div className="postHeader">
-        {
-            isAccount? <Button>
-                <MoreVert/>
-            </Button>: null
-        }
+        {isAccount ? (
+          <Button>
+            <MoreVert />
+          </Button>
+        ) : null}
       </div>
       <img src={postImage} alt="Post" />
       <div className="postDetails">
@@ -84,30 +94,32 @@ function Post({
           {caption}
         </Typography>
       </div>
-      <button style={{
-        border:"none",
-        backgroundColor:"white",
-        cursor:"pointer",
-        margin:"1vmax 2vmax"
-      }} onClick={() => {
-        setLikesUser(!likesUser)
-      }}
-      disabled={likes.length===0?true:false}
-      ><Typography>{likes.length} Likes</Typography></button>
+      <button
+        style={{
+          border: "none",
+          backgroundColor: "white",
+          cursor: "pointer",
+          margin: "1vmax 2vmax",
+        }}
+        onClick={() => {
+          setLikesUser(!likesUser);
+        }}
+        disabled={likes.length === 0 ? true : false}
+      >
+        <Typography>{likes.length} Likes</Typography>
+      </button>
       <div className="postFooter">
         <Button onClick={handlelike}>
-           {
-            liked?<Favorite sx={{color:"red"}}/>: <FavoriteBorder/>
-           }
+          {liked ? <Favorite sx={{ color: "red" }} /> : <FavoriteBorder />}
         </Button>
         <Button onClick={() => setCommentToggle(!commentToggle)}>
-            <ChatBubbleOutline/>
+          <ChatBubbleOutline />
         </Button>
-       {
-        isDelete? <Button>
-        <DeleteOutline/>
-    </Button>:null
-       }
+        {isDelete ? (
+          <Button>
+            <DeleteOutline />
+          </Button>
+        ) : null}
       </div>
       <Dialog open={likesUser} onClose={() => setLikesUser(!likesUser)}>
         <div className="DialogBox">
@@ -123,17 +135,39 @@ function Post({
           ))}
         </div>
       </Dialog>
-      <Dialog open={commentToggle} onClose={() => setCommentToggle(!commentToggle)}>
+      <Dialog
+        open={commentToggle}
+        onClose={() => setCommentToggle(!commentToggle)}
+      >
         <div className="DialogBox">
           <Typography variant="h4">Comments By</Typography>
 
-       <form className="commentForm" onSubmit={addCommentHandler}>
-        <input type="text" placeholder="Comment Here..." required value={commentValue} onChange={(e) => {
-          setCommentValue(e.target.value)
-          
-        }} />
-        <Button type="submit" variant="contained">Add</Button>
-       </form>
+          <form className="commentForm" onSubmit={addCommentHandler}>
+            <input
+              type="text"
+              placeholder="Comment Here..."
+              required
+              value={commentValue}
+              onChange={(e) => {
+                setCommentValue(e.target.value);
+              }}
+            />
+            <Button type="submit" variant="contained">
+              Add
+            </Button>
+          </form>
+          {
+            comments.length>0 ? comments.map((comment) => {
+              return <CommentCard userId={comment.user._id}
+              name={comment.user.name}
+              avatar={comment.user.avatar.url}
+              comment={comment.comment}
+              commentId={comment._id}
+              postId={postId}
+              isAccount={isAccount} />
+              
+            }):<Typography>No comments yet</Typography>
+          }
         </div>
       </Dialog>
     </div>
