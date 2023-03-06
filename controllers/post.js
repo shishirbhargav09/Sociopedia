@@ -7,7 +7,7 @@ exports.createPost = async (req, res) => {
       caption: req.body.caption,
       image: {
         public_id: "req.body.public_id",
-        url: "req.body.url",
+        url: "https://wp.missmalini.com/wp-content/uploads/2018/09/Hrithik-Roshan-1-1.jpg",
       },
       owner: req.user._id,
     };

@@ -11,12 +11,18 @@ import {
 } from "../Reducers/PostofFollowingSlice";
 import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../Reducers/postSlice";
 import {
+  deleteProfileFailure,
+  deleteProfileRequest,
+  deleteProfileSuccess,
   LoadUserFailure,
   LoadUserRequest,
   LoadUserSuccess,
   LoginFailure,
   LoginRequest,
   LoginSuccess,
+  LogoutUserFailure,
+  LogoutUserRequest,
+  LogoutUserSuccess,
 } from "../Reducers/UserSlice";
 
 export const loginUser = (email, password) => async (dispatch) => {
@@ -69,4 +75,27 @@ export const getmyPosts = () => async (dispatch) => {
   } catch (error) {
     dispatch(myPostsFailure(error.message));
   }
+};
+
+export const logoutUser = () => async (dispatch) => {
+  try {
+    dispatch(LogoutUserRequest())
+
+    await axios.get("/api/v1/logout");
+
+    dispatch(LogoutUserSuccess())
+  } catch (error) {
+    dispatch(LogoutUserFailure(error.response.data.message))
+  }
+};
+
+export const deleteMyProfile = () => async (dispatch) => {
+  try {
+    dispatch(deleteProfileRequest());
+
+    const { data } = await axios.delete("/api/v1/delete/me");
+
+    dispatch(deleteProfileSuccess(data.message));
+  } catch (error) {
+    dispatch((deleteProfileFailure(error.response.data.message))) }
 };

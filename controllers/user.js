@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
       password,
       avatar: {
         public_id: "public_id",
-        url: "url",
+        url: "https://wp.missmalini.com/wp-content/uploads/2018/09/Hrithik-Roshan-1-1.jpg",
       },
     });
     res.status(201).json({
