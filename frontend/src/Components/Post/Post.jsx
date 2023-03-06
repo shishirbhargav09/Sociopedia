@@ -27,6 +27,8 @@ function Post({
   isAccount = false,
 }) {
   const [likesUser, setLikesUser] = useState(false);
+  const [commentValue, setCommentValue] = useState("")
+  const [commentToggle, setCommentToggle] = useState(false)
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
     const [liked, setLiked] = useState(false);
@@ -44,6 +46,11 @@ function Post({
         }
       });
     }, [likes, user._id]);
+    
+    const addCommentHandler = (e) => {
+      e.preventDefault()
+     
+    }
   
   return (
     <div className="post">
@@ -93,7 +100,7 @@ function Post({
             liked?<Favorite sx={{color:"red"}}/>: <FavoriteBorder/>
            }
         </Button>
-        <Button>
+        <Button onClick={() => setCommentToggle(!commentToggle)}>
             <ChatBubbleOutline/>
         </Button>
        {
@@ -114,6 +121,19 @@ function Post({
               // avatar={like.avatar.url}
             />
           ))}
+        </div>
+      </Dialog>
+      <Dialog open={commentToggle} onClose={() => setCommentToggle(!commentToggle)}>
+        <div className="DialogBox">
+          <Typography variant="h4">Comments By</Typography>
+
+       <form className="commentForm" onSubmit={addCommentHandler}>
+        <input type="text" placeholder="Comment Here..." required value={commentValue} onChange={(e) => {
+          setCommentValue(e.target.value)
+          
+        }} />
+        <Button type="submit" variant="contained">Add</Button>
+       </form>
         </div>
       </Dialog>
     </div>
