@@ -164,6 +164,7 @@ function Post({
               comment={comment.comment}
               commentId={comment._id}
               postId={postId}
+              key={comment._id}
               isAccount={isAccount} />
               
             }):<Typography>No comments yet</Typography>

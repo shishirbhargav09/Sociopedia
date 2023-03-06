@@ -61,7 +61,7 @@ export const allUsers = () => async (dispatch) => {
   }
 };
 
-export const getmygPosts = () => async (dispatch) => {
+export const getmyPosts = () => async (dispatch) => {
   dispatch(myPostsRequest());
   try {
     const { data } = await axios.get("/api/v1/my/posts");
