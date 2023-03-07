@@ -132,8 +132,8 @@ function Account() {
           <div className="DialogBox">
             <Typography variant="h4">Following</Typography>
 
-            {user && user.followings.length > 0 ? (
-              user.followings.map((follow) => (
+            {user && user.following.length > 0 ? (
+              user.following.map((follow) => (
                 <User
                   key={follow._id}
                   userId={follow._id}
