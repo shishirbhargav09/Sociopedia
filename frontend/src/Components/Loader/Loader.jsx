@@ -3,8 +3,8 @@ import "./Loader.css";
 const Loader = () => {
   return (
     <div className="loader">
-      <div class="loadingio-spinner-gear-xhp1jq6a4un">
-      <div class="ldio-nufctrymfz">
+      <div className="loadingio-spinner-gear-xhp1jq6a4un">
+      <div className="ldio-nufctrymfz">
         <div>
           <div></div>
           <div></div>

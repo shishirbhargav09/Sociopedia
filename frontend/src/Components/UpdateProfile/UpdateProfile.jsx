@@ -1,20 +1,23 @@
 import { Avatar, Typography, Button, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import "./Register.css";
-import { registerUser } from "../../Actions/User";
+import "./UpdateProfile.css";
+import { LoadUser, updateProfile } from "../../Actions/User";
+import Loader from "../Loader/Loader";
 
+const UpdateProfile = () => {
+  const { loading, user } = useSelector((state) => state.user);
+  const {
+    loading: updateLoading,
+   
+  } = useSelector((state) => state.post);
 
-const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
   const [avatar, setAvatar] = useState("");
-  const [password, setPassword] = useState("");
+  const [avatarPrev, setAvatarPrev] = useState(user.avatar.url);
 
   const dispatch = useDispatch();
-
-  const { loading} = useSelector((state) => state.user);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -24,26 +27,30 @@ const Register = () => {
 
     Reader.onload = () => {
       if (Reader.readyState === 2) {
+        setAvatarPrev(Reader.result);
+
         setAvatar(Reader.result);
       }
     };
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(registerUser(name, email, password, avatar));
+    await dispatch(updateProfile(name, email, avatar));
+    dispatch(LoadUser());
   };
 
- 
-  return (
-    <div className="register">
-      <form className="registerForm" onSubmit={submitHandler}>
+  return loading ? (
+    <Loader />
+  ) : (
+    <div className="updateProfile">
+      <form className="updateProfileForm" onSubmit={submitHandler}>
         <Typography variant="h3" style={{ padding: "2vmax" }}>
           Sociopedia
         </Typography>
 
         <Avatar
-          src={avatar}
+          src={avatarPrev}
           alt="User"
           sx={{ height: "10vmax", width: "10vmax" }}
         />
@@ -54,7 +61,7 @@ const Register = () => {
           type="text"
           value={name}
           placeholder="Name"
-          className="registerInputs"
+          className="updateProfileInputs"
           required
           onChange={(e) => setName(e.target.value)}
         />
@@ -62,36 +69,20 @@ const Register = () => {
         <input
           type="email"
           placeholder="Email"
-          className="registerInputs"
-          autoComplete="username"
-
+          className="updateProfileInputs"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-
-        <input
-          type="password"
-          className="registerInputs"
-          placeholder="Password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <Link to="/">
-          <Typography>Already Signed Up? Login Now</Typography>
-        </Link>
-        {
-        loading && <CircularProgress />
+{
+        updateLoading && <CircularProgress />
       }
-        <Button disabled={loading} type="submit">
-          Sign Up
+        <Button disabled={updateLoading} type="submit">
+          Update
         </Button>
       </form>
     </div>
   );
 };
 
-export default Register;
+export default UpdateProfile;

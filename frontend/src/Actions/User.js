@@ -14,6 +14,9 @@ import {
   myPostsFailure,
   myPostsRequest,
   myPostsSuccess,
+  updateProfileFailure,
+  updateProfileRequest,
+  updateProfileSuccess,
 } from "../Reducers/postSlice";
 import {
   deleteProfileFailure,
@@ -31,6 +34,7 @@ import {
   RegisterFailure,
   RegisterRequest,
   RegisterSuccess,
+  
 } from "../Reducers/UserSlice";
 
 export const loginUser = (email, password) => async (dispatch) => {
@@ -122,10 +126,28 @@ export const registerUser =
       });
 
       dispatch(RegisterSuccess(data.user));
-      toast.success("User Created")
+      toast.success("User Created");
     } catch (error) {
       dispatch(RegisterFailure(error.response.data.message));
-      toast.error(error.response.data.message)
-
+      toast.error(error.response.data.message);
     }
   };
+export const updateProfile = (name, email, avatar) => async (dispatch) => {
+  try {
+    dispatch(updateProfileRequest());
+
+    const { data } = await axios.put("/api/v1/update/profile", {
+      name,
+      email,
+      avatar,
+    });
+
+    dispatch(updateProfileSuccess(data.message));
+    toast.success(data.message);
+
+  } catch (error) {
+    dispatch(updateProfileFailure(error.message));
+    toast.error(error.message);
+
+  }
+};
