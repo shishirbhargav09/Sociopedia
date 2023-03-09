@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addCommentFailure, addCommentRequest, addCommentSuccess, deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, likeFailure, likeRequest, likeSuccess } from "../Reducers/postSlice";
+import { addCommentFailure, addCommentRequest, addCommentSuccess, deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, likeFailure, likeRequest, likeSuccess, newPostsFailure, newPostsRequest, newPostsSuccess } from "../Reducers/postSlice";
 import { toast } from "react-hot-toast";
 
 export const likePost = (id) => async (dispatch) => {
@@ -49,3 +49,19 @@ export const likePost = (id) => async (dispatch) => {
 
     }
   };
+  export const createNewPost = (caption, image) => async (dispatch) => {
+    try {
+      dispatch(newPostsRequest());
+  
+      const { data } = await axios.post(
+        `/api/v1/post/upload`,
+        {
+          caption,
+          image,
+        }
+      );
+      dispatch(newPostsSuccess(data.message));
+    } catch (error) {
+      dispatch(newPostsFailure(error.response.data.message))
+  }
+  }

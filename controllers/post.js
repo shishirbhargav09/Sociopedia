@@ -3,31 +3,37 @@ const User = require("../models/User");
 
 exports.createPost = async (req, res) => {
   try {
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
+      folder: "posts",
+    });
     const newPostData = {
       caption: req.body.caption,
       image: {
-        public_id: "req.body.public_id",
-        url: "https://wp.missmalini.com/wp-content/uploads/2018/09/Hrithik-Roshan-1-1.jpg",
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
       },
       owner: req.user._id,
     };
-    const newPost = await Post.create(newPostData);
+
+    const post = await Post.create(newPostData);
+
     const user = await User.findById(req.user._id);
 
-    user.posts.push(newPost._id);
-    await user.save();
+    user.posts.unshift(post._id);
 
+    await user.save();
     res.status(201).json({
       success: true,
-      post: newPost,
+      message: "Post created",
     });
-  } catch (err) {
+  } catch (error) {
     res.status(500).json({
       success: false,
-      message: err.message,
+      message: error.message,
     });
   }
 };
+
 
 
 exports.likeAndUnlikePost = async (req, res) => {

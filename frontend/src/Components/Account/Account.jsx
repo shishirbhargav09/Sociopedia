@@ -2,7 +2,7 @@ import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { deleteMyProfile, getmyPosts, logoutUser } from "../../Actions/User";
 import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
