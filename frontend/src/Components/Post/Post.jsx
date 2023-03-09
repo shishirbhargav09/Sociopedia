@@ -10,8 +10,8 @@ import {
   DeleteOutline,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { addCommentOnPost, likePost } from "../../Actions/Post";
-import { getFollowingPosts } from "../../Actions/User";
+import { addCommentOnPost, likePost, updatePost } from "../../Actions/Post";
+import { getFollowingPosts, getmyPosts } from "../../Actions/User";
 import User from "../User/User";
 import CommentCard from "../CommentCard.jsx/CommentCard";
 
@@ -30,6 +30,8 @@ function Post({
   const [likesUser, setLikesUser] = useState(false);
   const [commentValue, setCommentValue] = useState("");
   const [commentToggle, setCommentToggle] = useState(false);
+  const [captionValue, setCaptionValue] = useState(caption);
+  const [captionToggle, setCaptionToggle] = useState(false);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(false);
@@ -38,7 +40,8 @@ function Post({
     setLiked(!liked);
     await dispatch(likePost(postId));
     if (isAccount) {
-      console.log("Bring my posts");
+      dispatch(getmyPosts());
+
     } else {
       dispatch(getFollowingPosts());
     }
@@ -62,11 +65,17 @@ function Post({
     }
   };
 
+  const updateCaptionHandler = (e) => {
+    e.preventDefault();
+    dispatch(updatePost(captionValue, postId));
+    dispatch(getmyPosts());
+  };
+
   return (
     <div className="post">
       <div className="postHeader">
         {isAccount ? (
-          <Button>
+          <Button onClick={() => setCaptionToggle(!captionToggle)} >
             <MoreVert />
           </Button>
         ) : null}
@@ -169,6 +178,28 @@ function Post({
               
             }):<Typography>No comments yet</Typography>
           }
+        </div>
+      </Dialog>
+      <Dialog
+        open={captionToggle}
+        onClose={() => setCaptionToggle(!captionToggle)}
+      >
+        <div className="DialogBox">
+          <Typography variant="h4">Update Caption</Typography>
+
+          <form className="commentForm" onSubmit={updateCaptionHandler}>
+            <input
+              type="text"
+              value={captionValue}
+              onChange={(e) => setCaptionValue(e.target.value)}
+              placeholder="Caption Here..."
+              required
+            />
+
+            <Button type="submit" variant="contained">
+              Update
+            </Button>
+          </form>
         </div>
       </Dialog>
     </div>

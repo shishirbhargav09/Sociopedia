@@ -64,6 +64,17 @@ export const postSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       },
+      updateCaptionRequest: (state) => {
+        state.loading = true;
+      },
+      updateCaptionSuccess: (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+      },
+      updateCaptionFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      },
     
     clearErrors: (state) => {
       state.error = null;
@@ -72,7 +83,8 @@ export const postSlice = createSlice({
 
 })
 
-export const { likeRequest, likeSuccess, likeFailure,  addCommentRequest, addCommentSuccess, addCommentFailure, deleteCommentRequest, deleteCommentSuccess, deleteCommentFailure, myPostsRequest, myPostsSuccess, myPostsFailure, newPostsRequest, newPostsSuccess, newPostsFailure,     
+export const { likeRequest, likeSuccess, likeFailure,  addCommentRequest, addCommentSuccess, addCommentFailure, deleteCommentRequest, deleteCommentSuccess, deleteCommentFailure, myPostsRequest, myPostsSuccess, myPostsFailure, newPostRequest, newPostSuccess, newPostFailure, updateCaptionRequest, updateCaptionSuccess, updateCaptionFailure,
+      
 clearErrors } =
 postSlice.actions;
 

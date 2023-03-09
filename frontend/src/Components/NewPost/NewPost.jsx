@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material'
+import { Button, CircularProgress, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createNewPost } from '../../Actions/Post'
@@ -7,7 +7,7 @@ import './NewPost.css'
 function NewPost() {
     const [image, setImage] = useState(null)
     const [caption, setCaption] = useState("")
-    const { loading, error, message } = useSelector((state) => state.post);
+    const { loading } = useSelector((state) => state.post);
     const dispatch = useDispatch();
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -41,6 +41,9 @@ function NewPost() {
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
       />
+      {
+        loading && <CircularProgress />
+      }
       <Button disabled={loading} type="submit">
         Post
       </Button>
