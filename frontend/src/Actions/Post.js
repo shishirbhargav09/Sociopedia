@@ -6,6 +6,9 @@ import {
   deleteCommentFailure,
   deleteCommentRequest,
   deleteCommentSuccess,
+  deletePostFailure,
+  deletePostRequest,
+  deletePostSuccess,
   likeFailure,
   likeRequest,
   likeSuccess,
@@ -82,11 +85,21 @@ export const updatePost = (caption, id) => async (dispatch) => {
     });
     dispatch(updateCaptionSuccess(data.message));
     toast.success(data.message);
-
   } catch (error) {
-    dispatch(updateCaptionFailure(error.response.data.message)
-    );
-    toast.success(error.message);
+    dispatch(updateCaptionFailure(error.response.data.message));
+    toast.error(error.message);
+  }
+};
 
+export const deletePost = (id) => async (dispatch) => {
+  try {
+    dispatch(deletePostRequest());
+
+    const { data } = await axios.delete(`/api/v1/post/${id}`);
+    dispatch(deletePostSuccess(data.message));
+    toast.success(data.message);
+  } catch (error) {
+    dispatch(deletePostFailure(error.response.data.message));
+    toast.error(error.response.data.message);
   }
 };
