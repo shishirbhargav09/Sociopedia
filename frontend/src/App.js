@@ -8,6 +8,7 @@ import Login from "./Components/Login/Login";
 import { Toaster } from "react-hot-toast";
 import Account from "./Components/Account/Account";
 import NewPost from "./Components/NewPost/NewPost";
+import Register from "./Components/Register/Register";
 function App() {
   const {isAuthenticated} = useSelector((state)=>state.user)
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ function App() {
         <Route
           path="/newpost"
           element={isAuthenticated ? <NewPost /> : <Login />}
+        />
+       <Route
+          path="/register"
+          element={isAuthenticated ? <Account /> : <Register />}
         />
       </Routes>
       <Toaster/>

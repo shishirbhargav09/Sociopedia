@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-hot-toast";
 import {
   allUsersFailure,
   allUsersRequest,
@@ -9,7 +10,11 @@ import {
   postOfFollowingRequest,
   postOfFollowingSuccess,
 } from "../Reducers/PostofFollowingSlice";
-import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../Reducers/postSlice";
+import {
+  myPostsFailure,
+  myPostsRequest,
+  myPostsSuccess,
+} from "../Reducers/postSlice";
 import {
   deleteProfileFailure,
   deleteProfileRequest,
@@ -23,6 +28,9 @@ import {
   LogoutUserFailure,
   LogoutUserRequest,
   LogoutUserSuccess,
+  RegisterFailure,
+  RegisterRequest,
+  RegisterSuccess,
 } from "../Reducers/UserSlice";
 
 export const loginUser = (email, password) => async (dispatch) => {
@@ -79,13 +87,13 @@ export const getmyPosts = () => async (dispatch) => {
 
 export const logoutUser = () => async (dispatch) => {
   try {
-    dispatch(LogoutUserRequest())
+    dispatch(LogoutUserRequest());
 
     await axios.get("/api/v1/logout");
 
-    dispatch(LogoutUserSuccess())
+    dispatch(LogoutUserSuccess());
   } catch (error) {
-    dispatch(LogoutUserFailure(error.response.data.message))
+    dispatch(LogoutUserFailure(error.response.data.message));
   }
 };
 
@@ -97,5 +105,27 @@ export const deleteMyProfile = () => async (dispatch) => {
 
     dispatch(deleteProfileSuccess(data.message));
   } catch (error) {
-    dispatch((deleteProfileFailure(error.response.data.message))) }
+    dispatch(deleteProfileFailure(error.response.data.message));
+  }
 };
+
+export const registerUser =
+  (name, email, password, avatar) => async (dispatch) => {
+    try {
+      dispatch(RegisterRequest());
+
+      const { data } = await axios.post("/api/v1/register", {
+        name,
+        email,
+        password,
+        avatar,
+      });
+
+      dispatch(RegisterSuccess(data.user));
+      toast.success("User Created")
+    } catch (error) {
+      dispatch(RegisterFailure(error.response.data.message));
+      toast.error(error.response.data.message)
+
+    }
+  };
