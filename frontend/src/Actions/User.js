@@ -68,7 +68,7 @@ export const getFollowingPosts = () => async (dispatch) => {
 export const allUsers = () => async (dispatch) => {
   dispatch(allUsersRequest());
   try {
-    const { data } = await axios.get("http://localhost:4000/api/v1/users");
+    const { data } = await axios.get("/api/v1/users");
     dispatch(allUsersSuccess(data.users));
   } catch (error) {
     dispatch(allUsersFailure(error.message));
