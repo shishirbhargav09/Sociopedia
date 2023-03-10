@@ -10,6 +10,7 @@ import User from "../User/User";
 import "./Account.css";
 
 function Account() {
+  
   const {user, loading: userLoading} = useSelector(state=>state.user)
   const { loading, posts } = useSelector((state) => state.post);
   const [followersToggle, setFollowersToggle] = useState(false);
@@ -90,7 +91,7 @@ function Account() {
         </Button>
 
         <Link to="/update/profile">Edit Profile</Link>
-        <Link to="/update/password">Change Password</Link>
+        {/* <Link to="/update/password">Change Password</Link> */}
 
         <Button
           variant="text"

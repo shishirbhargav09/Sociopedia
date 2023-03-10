@@ -6,6 +6,7 @@ import {
   followAndUnfollowUser,
   getUserPosts,
   getUserProfile,
+  LoadUser,
 } from "../../Actions/User";
 import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
@@ -14,19 +15,13 @@ import User from "../User/User";
 const UserProfile = () => {
   const dispatch = useDispatch();
 
-  const {
-    user,
-    loading: userLoading,
-    
-  } = useSelector((state) => state.userProfile);
+  const { user, loading: userLoading } = useSelector(
+    (state) => state.userProfile
+  );
 
   const { user: me } = useSelector((state) => state.user);
-  const { loading, posts } = useSelector((state) => state.userProfile);
-  const {
-
-    
-    loading: followLoading,
-  } = useSelector((state) => state.post);
+  const { posts } = useSelector((state) => state.userProfile);
+  const { loading: followLoading } = useSelector((state) => state.post);
 
   const params = useParams();
   const [followersToggle, setFollowersToggle] = useState(false);
@@ -37,7 +32,9 @@ const UserProfile = () => {
   const followHandler = async () => {
     setFollowing(!following);
     await dispatch(followAndUnfollowUser(user._id));
-    dispatch(getUserProfile(params.id));
+   await dispatch(getUserProfile(params.id));
+   dispatch(LoadUser())
+
   };
 
   useEffect(() => {
@@ -60,8 +57,7 @@ const UserProfile = () => {
     }
   }, [user, me._id, params.id]);
 
- 
-  return loading === true || userLoading === true ? (
+  return userLoading === true ? (
     <Loader />
   ) : (
     <div className="account">

@@ -1,6 +1,6 @@
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./Post.css";
 import {
   MoreVert,
@@ -11,7 +11,7 @@ import {
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { addCommentOnPost, deletePost, likePost, updatePost } from "../../Actions/Post";
-import { getFollowingPosts, getmyPosts, LoadUser } from "../../Actions/User";
+import { getFollowingPosts, getmyPosts, getUserPosts, LoadUser } from "../../Actions/User";
 import User from "../User/User";
 import CommentCard from "../CommentCard.jsx/CommentCard";
 
@@ -35,6 +35,7 @@ function Post({
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(false);
+  const params = useParams();
 
   const handlelike = async () => {
     setLiked(!liked);
@@ -44,6 +45,7 @@ function Post({
 
     } else {
       dispatch(getFollowingPosts());
+      dispatch(getUserPosts(params.id));
     }
   };
 
