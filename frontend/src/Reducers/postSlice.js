@@ -97,6 +97,29 @@ export const postSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       },
+      
+    userPostsRequest: (state) => {
+      state.loading = true;
+    },
+    userPostsSuccess: (state, action) => {
+      state.loading = false;
+      state.posts = action.payload;
+    },
+    userPostsFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    followUserRequest: (state) => {
+      state.loading = true;
+    },
+    followUserSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    followUserFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     clearErrors: (state) => {
       state.error = null;
     },
@@ -104,7 +127,7 @@ export const postSlice = createSlice({
 
 })
 
-export const { likeRequest, likeSuccess, likeFailure,  addCommentRequest, addCommentSuccess, addCommentFailure, deleteCommentRequest, deleteCommentSuccess, deleteCommentFailure, myPostsRequest, myPostsSuccess, myPostsFailure, newPostRequest, newPostSuccess, newPostFailure, deletePostRequest, deletePostSuccess, deletePostFailure,updateCaptionRequest, updateCaptionSuccess, updateCaptionFailure,  updateProfileRequest, updateProfileSuccess, updateProfileFailure, 
+export const { likeRequest, likeSuccess, likeFailure,  addCommentRequest, addCommentSuccess, addCommentFailure, deleteCommentRequest, deleteCommentSuccess, deleteCommentFailure, myPostsRequest, myPostsSuccess, myPostsFailure, newPostRequest, newPostSuccess, newPostFailure, deletePostRequest, deletePostSuccess, deletePostFailure,updateCaptionRequest, updateCaptionSuccess, updateCaptionFailure,  updateProfileRequest, updateProfileSuccess, updateProfileFailure, userPostsRequest, userPostsSuccess, userPostsFailure,  followUserRequest, followUserSuccess, followUserFailure,
       
 clearErrors } =
 postSlice.actions;

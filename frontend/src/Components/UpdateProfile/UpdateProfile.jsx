@@ -4,8 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import "./UpdateProfile.css";
 import { LoadUser, updateProfile } from "../../Actions/User";
 import Loader from "../Loader/Loader";
+import { useNavigate } from "react-router-dom";
+
 
 const UpdateProfile = () => {
+  const navigate = useNavigate()
+
   const { loading, user } = useSelector((state) => state.user);
   const {
     loading: updateLoading,
@@ -37,7 +41,9 @@ const UpdateProfile = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     await dispatch(updateProfile(name, email, avatar));
-    dispatch(LoadUser());
+   await dispatch(LoadUser());
+    navigate('/account')
+
   };
 
   return loading ? (

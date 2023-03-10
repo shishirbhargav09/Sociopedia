@@ -35,7 +35,7 @@
   transform: translate(-50%,-50%) rotate(135deg)
 }
 .loader{
-    height: 100vh;
+    height: calc(100vh - 5vmax);
     width: 100vw;
     display: flex;
     justify-content: center;

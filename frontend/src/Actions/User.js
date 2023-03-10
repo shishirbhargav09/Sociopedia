@@ -11,12 +11,18 @@ import {
   postOfFollowingSuccess,
 } from "../Reducers/PostofFollowingSlice";
 import {
+  followUserFailure,
+  followUserRequest,
+  followUserSuccess,
   myPostsFailure,
   myPostsRequest,
   myPostsSuccess,
   updateProfileFailure,
   updateProfileRequest,
   updateProfileSuccess,
+  userPostsFailure,
+  userPostsRequest,
+  userPostsSuccess,
 } from "../Reducers/postSlice";
 import {
   deleteProfileFailure,
@@ -34,6 +40,9 @@ import {
   RegisterFailure,
   RegisterRequest,
   RegisterSuccess,
+  userProfileFailure,
+  userProfileRequest,
+  userProfileSuccess,
   
 } from "../Reducers/UserSlice";
 
@@ -108,8 +117,12 @@ export const deleteMyProfile = () => async (dispatch) => {
     const { data } = await axios.delete("/api/v1/delete/me");
 
     dispatch(deleteProfileSuccess(data.message));
+    toast.success(data.message);
+
   } catch (error) {
     dispatch(deleteProfileFailure(error.response.data.message));
+    toast.error(error.message);
+
   }
 };
 
@@ -132,6 +145,7 @@ export const registerUser =
       toast.error(error.response.data.message);
     }
   };
+
 export const updateProfile = (name, email, avatar) => async (dispatch) => {
   try {
     dispatch(updateProfileRequest());
@@ -147,6 +161,51 @@ export const updateProfile = (name, email, avatar) => async (dispatch) => {
 
   } catch (error) {
     dispatch(updateProfileFailure(error.message));
+    toast.error(error.message);
+
+  }
+};
+
+export const getUserPosts = (id) => async (dispatch) => {
+  try {
+    dispatch(userPostsRequest());
+
+    const { data } = await axios.get(`/api/v1/userposts/${id}`)
+
+    dispatch(userPostsSuccess(data.posts));
+
+  } catch (error) {
+    dispatch(userPostsFailure(error.message));
+    toast.error(error.message);
+
+  }
+};
+
+export const getUserProfile = (id) => async (dispatch) => {
+  try {
+    dispatch(userProfileRequest());
+
+    const { data } =  await axios.get(`/api/v1/user/${id}`);
+
+    dispatch(userProfileSuccess(data.user));
+
+  } catch (error) {
+    dispatch(userProfileFailure(error.message));
+    toast.error(error.message);
+
+  }
+};
+
+export const followAndUnfollowUser = (id) => async (dispatch) => {
+  try {
+    dispatch(followUserRequest());
+
+    const { data } = await axios.get(`/api/v1/follow/${id}`);
+
+    dispatch(followUserSuccess(data.message));
+
+  } catch (error) {
+    dispatch(followUserFailure(error.message));
     toast.error(error.message);
 
   }
