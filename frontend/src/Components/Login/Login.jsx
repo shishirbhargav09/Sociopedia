@@ -1,16 +1,27 @@
-import { Button, Typography } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import React, { useState } from "react";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../Actions/User";
-import {  useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 function Login() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const loginHandler = (e) => {
+  const { loading } = useSelector((state) => state.user);
+  const guestLoginHandler = async () => {
+    setEmail("guest@gmail.com");
+    setPassword("guest@gmail.com");
+    await dispatch(loginUser(email, password));
+    
+    navigate("/");
+  };
+  const loginHandler = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(email,password))
+
+    await dispatch(loginUser(email, password));
+    navigate("/");
   };
   return (
     <div className="login">
@@ -41,7 +52,15 @@ function Login() {
         <Link to="/forgot/password">
           <Typography>Forget Password</Typography>
         </Link>
+        {loading && <CircularProgress />}
         <Button type="submit">Login</Button>
+        <Button
+          onClick={(e) => {
+            guestLoginHandler();
+          }}
+        >
+          Guest Login
+        </Button>
         <Link to="/register">
           <Typography>New User</Typography>
         </Link>
