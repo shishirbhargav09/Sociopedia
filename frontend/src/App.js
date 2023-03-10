@@ -10,9 +10,6 @@ import Account from "./Components/Account/Account";
 import NewPost from "./Components/NewPost/NewPost";
 import Register from "./Components/Register/Register";
 import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
-import UserProfile from "./Components/UserProfile/UserProfile";
-import Search from "./Components/Search/Search";
-import NotFound from "./Components/NotFound/NotFound";
 function App() {
   const {isAuthenticated} = useSelector((state)=>state.user)
   const dispatch = useDispatch();
@@ -39,14 +36,6 @@ function App() {
           path="/update/profile"
           element={isAuthenticated ? <UpdateProfile /> : <Login />}
         />
-          <Route
-          path="/user/:id"
-          element={isAuthenticated ? <UserProfile /> : <Login />}
-        />
-
-        <Route path="search" element={<Search/>} />
-
-        <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster/>
     </BrowserRouter>
