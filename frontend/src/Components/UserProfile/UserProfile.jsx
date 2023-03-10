@@ -21,7 +21,7 @@ const UserProfile = () => {
   } = useSelector((state) => state.userProfile);
 
   const { user: me } = useSelector((state) => state.user);
-  const { loading, posts } = useSelector((state) => state.userPosts);
+  const { loading, posts } = useSelector((state) => state.userProfile);
   const {
 
     

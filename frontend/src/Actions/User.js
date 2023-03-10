@@ -20,10 +20,8 @@ import {
   updateProfileFailure,
   updateProfileRequest,
   updateProfileSuccess,
-  userPostsFailure,
-  userPostsRequest,
-  userPostsSuccess,
 } from "../Reducers/postSlice";
+import { userPostsFailure, userPostsRequest, userPostsSuccess, userProfileFailure, userProfileRequest, userProfileSuccess } from "../Reducers/UserProfile";
 import {
   deleteProfileFailure,
   deleteProfileRequest,
@@ -40,9 +38,7 @@ import {
   RegisterFailure,
   RegisterRequest,
   RegisterSuccess,
-  userProfileFailure,
-  userProfileRequest,
-  userProfileSuccess,
+ 
   
 } from "../Reducers/UserSlice";
 
