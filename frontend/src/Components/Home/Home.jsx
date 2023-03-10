@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { allUsers, getFollowingPosts, getmyPosts, LoadUser } from "../../Actions/User";
+import { allUsers, getFollowingPosts } from "../../Actions/User";
 import Post from "../Post/Post";
 import User from "../User/User";
 import Loader from "../Loader/Loader";
@@ -16,8 +16,7 @@ function Home() {
   useEffect(() => {
     dispatch(getFollowingPosts());
     dispatch(allUsers());
-    dispatch(LoadUser())
-    dispatch(getmyPosts())
+ 
   }, [dispatch]);
 
   return (

@@ -45,7 +45,10 @@ function Post({
 
     } else {
       dispatch(getFollowingPosts());
-      dispatch(getUserPosts(params.id));
+      if(params.id){
+        dispatch(getUserPosts(params.id));
+
+      }
     }
   };
 

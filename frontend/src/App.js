@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { getmyPosts, LoadUser } from "./Actions/User";
+import {  LoadUser } from "./Actions/User";
 import Header from "./Components/Header/Header";
 import Home from "./Components/Home/Home";
 import Login from "./Components/Login/Login";
@@ -18,7 +18,6 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchuser = async () => {
-      await dispatch(getmyPosts());
     
     await dispatch(LoadUser());
     }
